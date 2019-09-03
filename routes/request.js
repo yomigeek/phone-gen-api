@@ -10,4 +10,9 @@ requestRouter.post(
   RequestController.generateNumbers
 );
 
+requestRouter.get(
+  '/total',
+  RequestController.getTotal
+);
+
 export default requestRouter;
