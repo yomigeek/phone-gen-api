@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "export NODE_ENV=test && nyc --reporter=html --reporter=text --reporter=lcov mocha --compilers js:babel-core/register tests/ --exit",
-    "start": "export NODE_ENV=development && babel-node app.js --exec babel-node --presets es2015",
-    "dev": "nodemon app.js --exec babel-node --presets es2015",
+    "start": "export NODE_ENV=production && babel-node app.js --exec babel-node --presets es2015",
+    "dev": "export NODE_ENV=development && nodemon app.js --exec babel-node --presets es2015",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
