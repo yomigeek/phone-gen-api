@@ -39,13 +39,6 @@ class RequestController {
   
   }
 
-  static requestMessage(res, message) {
-    return res.status(201).json({
-      status: "success",
-      statusCode: 201,
-      message
-    });
-  }
 
   static getTotal(req, res) {
     if (fs.existsSync(storageFilePath)) {
@@ -61,12 +54,42 @@ class RequestController {
       })
     }
     else {
-      return res.status(404).json({
-        status: "error",
-        statusCode: 404,
-        message: "No numbers has been generated yet"
-      });
+      RequestController.numbersNotFound(res);
     }
+  }
+
+  static getNumbers(req, res) {
+    if (fs.existsSync(storageFilePath)) {
+      fs.readFile(storageFilePath,function(err,content){
+        if(err) throw err;
+        const parseJson = JSON.parse(content);
+
+        return res.status(200).json({
+          status: "success",
+          statusCode: 200,
+          numbers: parseJson
+        });
+      })
+    }
+    else {
+      RequestController.numbersNotFound(res);
+    }
+  }
+
+  static numbersNotFound(res) {
+    return res.status(404).json({
+      status: "error",
+      statusCode: 404,
+      message: "No numbers has been generated yet"
+    });
+  }
+
+  static requestMessage(res, message) {
+    return res.status(201).json({
+      status: "success",
+      statusCode: 201,
+      message
+    });
   }
 }
 

@@ -30,6 +30,21 @@ describe('Request Action API Tests', () => {
       });
   });
 
+  it('should return a 404 error for list of phone numbers generated on GET request when storage file is missing', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/all')
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        res.body.message.should.equal('No numbers has been generated yet');       
+        done();
+      });
+  });
+
   it('should generate numbers on POST request without existing storage json file', (done) => {
     chai.request(app)
       .post('/api/v1/request/generate')
@@ -126,6 +141,20 @@ describe('Request Action API Tests', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('status');
         res.body.should.have.property('statusCode');
+        done();
+      });
+  });
+
+  it('should return the list of phone numbers generated on GET request ', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/all')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('numbers');
         done();
       });
   });
