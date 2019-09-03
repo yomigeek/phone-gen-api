@@ -11,6 +11,7 @@ apiRoutes.get('/', (req, res) => {
   res.status(200).send({
     url: `${req.protocol}://${req.headers.host}`,
     status: 'success',
+    statusCode: 200,
     message: "Phone number generator API"
   });
 });

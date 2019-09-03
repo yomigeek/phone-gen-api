@@ -21,6 +21,7 @@ app.use('/api/v1/', apiRoutes);
 app.all('*', (req, res) => {
   res.status(404).json({
     status: 'error',
+    statusCode: 404,
     message: 'Oops! The resource you requested does not exist.',
   });
 });
