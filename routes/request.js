@@ -25,4 +25,9 @@ requestRouter.get(
   RequestController.sortInAsc
 );
 
+requestRouter.get(
+  '/sortdesc',
+  RequestController.sortInDesc
+);
+
 export default requestRouter;
