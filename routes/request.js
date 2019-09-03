@@ -15,4 +15,9 @@ requestRouter.get(
   RequestController.getTotal
 );
 
+requestRouter.get(
+  '/all',
+  RequestController.getNumbers
+);
+
 export default requestRouter;
