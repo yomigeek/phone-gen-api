@@ -20,4 +20,9 @@ requestRouter.get(
   RequestController.getNumbers
 );
 
+requestRouter.get(
+  '/sortasc',
+  RequestController.sortInAsc
+);
+
 export default requestRouter;

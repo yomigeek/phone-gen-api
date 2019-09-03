@@ -76,6 +76,25 @@ class RequestController {
     }
   }
 
+  static sortInAsc(req, res){
+    if (fs.existsSync(storageFilePath)) {
+      fs.readFile(storageFilePath,function(err,content){
+        if(err) throw err;
+        const parseJson = JSON.parse(content);
+        const sort = parseJson.sort(function(a, b){return a-b});
+
+        return res.status(200).json({
+          status: "success",
+          statusCode: 200,
+          numbers: sort
+        });
+      })
+    }
+    else {
+      RequestController.numbersNotFound(res);
+    }
+  }
+
   static numbersNotFound(res) {
     return res.status(404).json({
       status: "error",
