@@ -114,6 +114,44 @@ class RequestController {
     }
   }
 
+  static getMaximumNum(req, res){
+    if (fs.existsSync(storageFilePath)) {
+      fs.readFile(storageFilePath,function(err,content){
+        if(err) throw err;
+        const parseJson = JSON.parse(content);
+        const maximumValue = Math.max(...parseJson);
+
+        return res.status(200).json({
+          status: "success",
+          statusCode: 200,
+          maximumNumber: '0'+ maximumValue
+        });
+      })
+    }
+    else {
+      RequestController.numbersNotFound(res);
+    }
+  }
+
+  static getMinimumNum(req, res){
+    if (fs.existsSync(storageFilePath)) {
+      fs.readFile(storageFilePath,function(err,content){
+        if(err) throw err;
+        const parseJson = JSON.parse(content);
+        const minimumValue = Math.min(...parseJson);
+
+        return res.status(200).json({
+          status: "success",
+          statusCode: 200,
+          minimumNumber: '0'+ minimumValue
+        });
+      })
+    }
+    else {
+      RequestController.numbersNotFound(res);
+    }
+  }
+
   static numbersNotFound(res) {
     return res.status(404).json({
       status: "error",

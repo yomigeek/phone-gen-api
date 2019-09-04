@@ -9,6 +9,10 @@ chai.should();
 
 chai.use(chaiHttp);
 
+let maximumValue;
+
+let minimumValue;
+
 describe('Request Action API Tests', () => {
   before((done) => {
     fs.unlinkSync(storageFilePath)
@@ -102,6 +106,38 @@ describe('Request Action API Tests', () => {
         done();
       });
   });
+
+
+  it('should return a 404 error for getting the maximum number from the list of phone numbers generated on GET request when storage file is missing', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/getmax')
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        res.body.message.should.equal('No numbers has been generated yet');       
+        done();
+      });
+  });
+
+  it('should return a 404 error for getting the minimum number from the list of phone numbers generated on GET request when storage file is missing', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/getmin')
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        res.body.message.should.equal('No numbers has been generated yet');       
+        done();
+      });
+  });
+
 
   it('should generate numbers on POST request without existing storage json file', (done) => {
     chai.request(app)
@@ -245,5 +281,79 @@ describe('Request Action API Tests', () => {
         done();
       });
   });
+
+  it('should return the maximum number from list of generated phone numbers on GET request ', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/getmax')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('maximumNumber');
+        done();
+      });
+  });
+
+
+  it('should check if the maximum number from list of generated phone numbers on GET request is correct ', (done) => {
+    fs.readFile(storageFilePath,function(err,content){
+      if(err) throw err;
+      const parseJson = JSON.parse(content);
+      maximumValue = Math.max(...parseJson);
+    })
+    chai.request(app)
+      .get('/api/v1/request/getmax')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('maximumNumber');
+        res.body.maximumNumber.should.equal('0'+maximumValue);
+
+        done();
+      });
+  });
+
+
+  it('should return the minimum number from list of generated phone numbers on GET request ', (done) => {
+    chai.request(app)
+      .get('/api/v1/request/getmin')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('minimumNumber');
+        done();
+      });
+  });
+
+
+  it('should check if the minimum number from list of generated phone numbers on GET request is correct ', (done) => {
+    fs.readFile(storageFilePath,function(err,content){
+      if(err) throw err;
+      const parseJson = JSON.parse(content);
+      minimumValue = Math.min(...parseJson);
+    })
+    chai.request(app)
+      .get('/api/v1/request/getmin')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('minimumNumber');
+        res.body.minimumNumber.should.equal('0'+minimumValue);
+
+        done();
+      });
+  });
+
 
 });
