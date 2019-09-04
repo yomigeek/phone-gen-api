@@ -30,4 +30,14 @@ requestRouter.get(
   RequestController.sortInDesc
 );
 
+requestRouter.get(
+  '/getmax',
+  RequestController.getMaximumNum
+);
+
+requestRouter.get(
+  '/getmin',
+  RequestController.getMinimumNum
+);
+
 export default requestRouter;
